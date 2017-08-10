@@ -46,7 +46,7 @@ class XPathExtractor(object):
             except IndexError:
                 extract_plist.append('')
         eplng = len(extract_plist)
-        if eplng > 1:
+        if len(values) > 1 and eplng > 1:
             return get_master_path(*extract_plist)
         elif eplng == 1:
             return extract_plist[0]
