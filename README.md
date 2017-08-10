@@ -1,4 +1,4 @@
-Custom Flask API Utils
-======================
+Webpage Content Extractor Utils
+===============================
 
 Utils to extract data from webpages content
