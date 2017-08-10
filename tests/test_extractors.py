@@ -95,7 +95,7 @@ class TestXpath(unittest.TestCase):
     def test_from_value(self):
         v1 = 'BePureHome Obvious Tafellamp'
         xpath = self._xpe.get_xpath_from_value(v1)
-        v2 = self._xpe.extract_text(xpath)[0]
+        v2 = self._xpe.extract_text(xpath[0])[0]
         self.assertEqual(v1, v2)
 
     def test_from_values(self):

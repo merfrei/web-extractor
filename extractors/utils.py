@@ -4,6 +4,14 @@ does not specifically belong to any of them.
 """
 
 
+from collections import Counter
+
+
+def most_common(lst):
+    data = Counter(lst)
+    return data.most_common(1)[0][0]
+
+
 def get_master_path(*paths, separator='/'):
     """ Find the common parts of the paths when the inputs have a "master path"
     The inputs must be of the same length
@@ -11,21 +19,21 @@ def get_master_path(*paths, separator='/'):
                          '/html/body/div/div[2]/div/div/div/div/div[2]/div[2]/div[2]/ul/li[2]/form/div/div[1]/span[1]'])
     '/html/body/div/div[2]/div/div/div/div/div[2]/div[2]/div[2]/ul/li/form/div/div[1]/span[1]'
     """
-    output = ''
-    if len(paths) == 0:
-        return output
-    if len(paths) == 1:
-        return paths[0]
-    paths_parts = [p.split(separator) for p in paths]
-    equal_lengths = [len(p) == len(paths_parts[0]) for p in paths_parts[1:]]
-    if not all(equal_lengths):
-        return output
-    for i in range(len(paths[0])):
-        lt = paths[0][i]
-        try:
-            equal_letters = [p[i] == lt for p in paths[1:]]
-        except IndexError:
-            return ''  # Incorrect length error
-        if all(equal_letters):
-            output += lt
-    return output.replace('[]', '')
+    # Split
+    paths_splitted = [p.split(separator) for p in paths]
+    # Look for the most common length
+    common_length = most_common([len(p) for p in paths_splitted])
+    # Remove incorrect length
+    paths_splitted = [p for p in paths_splitted if len(p) == common_length]
+
+    master_path = []
+    for i in range(common_length):
+        values = [paths[i].split('[')[0] for paths in paths_splitted]
+        common_value = most_common(values)
+        values = set([paths[i] for paths in paths_splitted if common_value in paths[i]])
+        if len(values) == 1:
+            master_path.append(values.pop())
+        else:
+            master_path.append(common_value)
+
+    return separator.join(master_path)

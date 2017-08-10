@@ -42,15 +42,13 @@ class XPathExtractor(object):
                     if hasattr(e, 'text') and e.text is not None \
                        and t == e.text.strip():
                         results.append(e)
-                extract_plist.append(list(map(self._tree.getpath, results))[0])
+                extract_plist.extend([self._tree.getpath(r) for r in results])
             except IndexError:
-                extract_plist.append('')
+                continue
         eplng = len(extract_plist)
         if len(values) > 1 and eplng > 1:
             return get_master_path(*extract_plist)
-        elif eplng == 1:
-            return extract_plist[0]
-        return ''
+        return extract_plist
 
     @classmethod
     def from_url(cls, url):
