@@ -33,12 +33,13 @@ class XPathExtractor(object):
                 result.append(e)
         return result
 
-    def get_xpath_from_value(self, *values):
+    def get_xpath_from_value(self, *values, attr='text()'):
         extract_plist = []
         for t in values:
             try:
                 results = []
-                for e in self._tree.xpath('//*[contains(text(), "%s")]' % t):
+                xpath = '//*[contains({}, "{}")]'.format(attr, t)
+                for e in self._tree.xpath(xpath):
                     if hasattr(e, 'text') and e.text is not None \
                        and t == e.text.strip():
                         results.append(e)
