@@ -6,11 +6,7 @@
 
 import re
 import requests
-from lxml.html import fromstring
-from extruct.jsonld import JsonLdExtractor
-from extruct.rdfa import RDFaExtractor
-from extruct.w3cmicrodata import MicrodataExtractor
-from extruct.xmldom import XmlDomHTMLParser
+import extruct
 from extractors.utils import get_master_path
 
 
@@ -37,20 +33,7 @@ class SemanticDataBase(object):
                 self._data[k] = c[0](original[orig_k])
 
     def _extract(self, htmlstring, url='', encoding='UTF-8'):
-        domparser = XmlDomHTMLParser(encoding=encoding)
-        tree = fromstring(htmlstring, parser=domparser)
-        extractors = (
-            ('json-ld', JsonLdExtractor()),
-            ('microdata', MicrodataExtractor()),
-            ('rdfa', RDFaExtractor()))
-        data = {}
-        for name, extractor in extractors:
-            try:
-                data[name] = extractor.extract_items(tree, url=url)
-            except:
-                # ERROR!!
-                continue
-        return data
+        return extruct.extract(htmlstring, url)
 
     def keys(self):
         return self._data.keys()

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='web-extractor',
-      version='0.1',
+      version='0.1.1',
       description='Utils to extract data from webpages content',
       url='http://github.com/merfrei/web-extractor',
       author='Emiliano M. Rudenick',
